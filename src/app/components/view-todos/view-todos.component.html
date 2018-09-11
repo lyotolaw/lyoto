@@ -1,0 +1,59 @@
+
+<div id="format">
+    
+    <table [hidden]="todos.length == 0" class="table table-striped">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col"><input type="checkbox" (click)="checkUnCheckAll()"></th>
+          <th scope="col">TITRE</th>
+          <th scope="col">BEGIN</th>
+          <th scope="col">END</th>
+          <th scope="col">DELETE </th>
+          <th scope="col">EDIT</th>
+        </tr>
+      </thead>
+  
+      <tbody >
+          <button 
+            type="button" 
+            (click)="deleteCheckedTwo()"
+            [disabled]="noneChecked()"
+            class="btn btn-danger"
+           
+            >
+              DELETE
+            </button>
+            
+           
+        <tr *ngFor="let todo of todos; let i = index;">
+            
+            <td>
+                <input 
+                  type="checkbox"
+                  (click)="toggle(i)"
+                  [checked]=todo.isChecked
+                  >
+            </td>
+          <td [ngClass]="{strikeOut: todo.isChecked}">{{todo.title}}</td>
+         <td [ngClass]="{strikeOut: todo.isChecked}">{{todo.begin | date: 'dd-MM-yyyy'}}</td>
+          <td [ngClass]="{strikeOut: todo.isChecked}">{{todo.end | date: 'dd-MM-yyyy'}}</td>
+          <td>
+            <button type="button" (click)="delete(i)" class="btn btn-warning">
+              DEL
+            </button>
+          </td>
+          <td>
+            <button 
+            class="btn btn-success"
+            type="button" 
+            (click)="update(todo)"
+               
+            >
+              EDIT
+            </button>
+          </td>
+        </tr>
+      </tbody>
+  
+    </table>
+  </div>

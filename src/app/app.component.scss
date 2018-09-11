@@ -1,0 +1,13 @@
+/**
+* Designe du composant AppComponent
+**/
+table{
+    tbody{
+        background-color: burlywood;
+        td{
+            &.strikeOut {
+                text-decoration: line-through;
+            }
+        }
+    }
+}

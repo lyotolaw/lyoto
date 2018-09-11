@@ -1,0 +1,57 @@
+<form [formGroup]="todoForm" (submit)=saveTodo()>
+  <div class="col-6" id="dispo">
+    
+    <div class="form-group col-md-6">
+    
+      <input 
+        class="form-control"  
+        type="text" 
+        placeholder="A faire..." 
+        formControlName="title"
+      >
+  
+    </div>
+        <div 
+          class="alert alert-warning"
+          *ngIf="title.invalid && title.touched"
+        >
+          Le titre doit contenir au moins 5 caractères.
+
+        </div>
+    <div class="form-group col-md-6">
+          
+      <input 
+        class="form-control"  
+        type="date" placeholder="Au..." 
+        formControlName="begin"
+      >
+               
+    </div>
+               
+      <div class="form-group col-md-6">
+        
+        
+         <input class="form-control"  type="date" placeholder="Du...." formControlName="end">
+      
+      </div>
+   
+    
+      
+   <div>
+      <div 
+      class="alert alert-warning"
+      *ngIf="todoForm.hasError('begin')"
+    >
+      La date de fin doit être > à celle du début
+
+    </div>
+      <button class="btn btn-primary" 
+          type="submit"
+          [disabled]="todoForm.invalid"
+      >
+      Ajouter
+      
+      </button>
+    </div>
+  </div>
+</form>
