@@ -7,6 +7,8 @@ import { TodoInterface } from '../../shared/interfaces/todo-interface';
 
 // Importation des composants Material
 import { MatTableDataSource, MatSort, MatSelect, MatOption} from '@angular/material';
+import {TodoHelper} from '../../shared/helpers/todo-helper';
+import { MatColumns} from '../../shared/interfaces/mat-columns';
 
 @Component({
   selector: 'view-todos',
@@ -45,35 +47,18 @@ public dataSource = new MatTableDataSource<TodoInterface>();
    * Colonnes utilisées dans mat-table
    */
 public columns = new FormControl;
-   public displayedColumns: String[] = [
-     'title',
-     'begin',
-     'end',
-     'update',
-     'delete'
-   ];
-   /**
-    * Colonnes à afficher dans le mat-select
-    */
-   public availableColumns: String[] = [
   
-    'begin',
-    'end',
-  
-  ];
+
 
   /**
    * Colonnes sélectionnées par défaut, pour que les boites soient cochées
    */
-public selectedValue: String[] = [
-  'begin',
-  'end'
-];
+public selectedValue: String[];
 
 /**
  * Options réellement sélectionnées par l'utilisateur 
  */
-public selectedOptions: any;
+public selectedOptions: String[];
 
 
 public checkedStatus : Boolean;
@@ -83,9 +68,18 @@ public checkedStatus : Boolean;
    * @var TodoInterface[]
    */
   public todos: TodoInterface[];
+  /**
+   * Instance de la classe TodoHelper
+   */
+  public helper: TodoHelper;
+
+ 
 
   constructor(private todoService:TodoService) { 
-    
+     //instancie le helper 
+  this.helper = new TodoHelper();
+  this.selectedValue = this.helper.optionalColumnsToArray();
+
     this.todos = []; //Définit le tableau des todos à afficher
     
     this.todoSubscription = this.todoService.getTodo()
@@ -189,33 +183,14 @@ public update(todo: TodoInterface):void {
  * @param event Evènement propagé
  */
 public changeView(event:any):void {
+  this.helper.setDisplayedColumns(this.selectedOptions);
   
-  console.log(this.selectedOptions + ' de taille : ' + this.selectedOptions.length)
-  const toShow : String[] = this.selectedOptions;
-  /**
-   * Définit le tableau final pour l'affichage des colonnes
-   */
-  const toDisplay:String[] = [];
-  
-  toDisplay.push('title'); // Toujours affichée, donc...on le push
-  
-    if (toShow.indexOf('begin') !== -1) {
-      //begin est coché, on le push
-      toDisplay.push('begin');
-    }
-    if (toShow.indexOf('end') !== -1) {
-      //end est coché, on le push
-      toDisplay.push('end');
-  }
-  //On doit toujours avoir les boutons aussi
-  toDisplay.push('update');
-  toDisplay.push('delete');
 
-  /**
-   * On remplace le tableau des colonnes à afficher dans le tableau
-   */
-  this.displayedColumns = toDisplay;
 }
+
+
+
+
 
 
 private _check():void {
